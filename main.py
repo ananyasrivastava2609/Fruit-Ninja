@@ -10,8 +10,9 @@ tracker = HandTracker()
 fruits = []
 frame_count = 0
 score = 0
-score = 0
 missed = 0
+trail_points = [] 
+
 
 while True:
 
@@ -32,15 +33,20 @@ while True:
     finger = tracker.get_finger_position(frame)
 
     if finger:
-        cv2.circle(frame, finger, 10, (0,0,255), -1)
+        trail_points.append(finger)
+
+        if len(trail_points) > 10:
+            trail_points.pop(0)
+
+    else:
+        trail_points.clear()
+
+    for i in range(1, len(trail_points)):
+        cv2.line(frame, trail_points[i-1], trail_points[i], (255, 0, 0), 5)
 
     # move and draw fruits
     for fruit in fruits[:]:
         fruit.move()
-        # remove fruits that fall off screen
-        if fruit.y > frame.shape[0] + 100:
-            fruits.remove(fruit)
-            continue
         
         fruit.draw(frame)
 
@@ -53,7 +59,7 @@ while True:
                 score += 1
                 print("Fruit sliced! Score:", score)
 
-            # remove fruits that fall off screen
+        # remove fruits that fall off screen
         if fruit.y - fruit.radius > frame.shape[0]:
             fruits.remove(fruit)
             missed += 1
