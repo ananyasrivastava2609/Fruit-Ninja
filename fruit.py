@@ -4,10 +4,12 @@ import cv2
 
 class Fruit:
     def __init__(self, width, height):
-        self.x = random.randint(50, width - 50)
-        self.y = 0
-        self.radius = 25
-        self.speed = random.randint(10, 15)
+        self.x = random.randint(50, width - 50) # start somewhere in the middle
+        self.y = height # start at bottom (0 for top)
+        self.radius = 30 # for collision detection
+        self.vx = random.randint(-4, 4)   # horizontal velocity
+        self.vy = random.randint(-28, -20)  # initial upward speed throw
+        self.gravity = 1 
 
         # load fruit images
         self.images = [
@@ -28,12 +30,14 @@ class Fruit:
         self.image = random.choice(self.images)
 
          # resize for display
-        self.image = cv2.resize(self.image, (200, 200))
+        self.image = cv2.resize(self.image, (250, 250))
 
-    def move(self):
-        self.y += self.speed 
+    def move(self): # update position based on velocity and gravity
+        self.x += self.vx
+        self.y += self.vy
+        self.vy += self.gravity 
 
-    def draw(self, frame):
+    def draw(self, frame): 
         h, w, _ = self.image.shape
 
         x1 = int(self.x - w / 2)

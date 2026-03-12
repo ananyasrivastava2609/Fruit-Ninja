@@ -35,6 +35,11 @@ while True:
     # move and draw fruits
     for fruit in fruits[:]:
         fruit.move()
+        # remove fruits that fall off screen
+        if fruit.y > frame.shape[0] + 100:
+            fruits.remove(fruit)
+            continue
+        
         fruit.draw(frame)
 
         if finger:
