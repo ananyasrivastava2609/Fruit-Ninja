@@ -10,6 +10,8 @@ tracker = HandTracker()
 fruits = []
 frame_count = 0
 score = 0
+score = 0
+missed = 0
 
 while True:
 
@@ -51,15 +53,19 @@ while True:
                 score += 1
                 print("Fruit sliced! Score:", score)
 
-    cv2.putText(
-        frame,
-        f"Score: {score}",
-        (20, 50),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        1,
-        (255, 255, 255),
-        2
-    )
+            # remove fruits that fall off screen
+        if fruit.y - fruit.radius > frame.shape[0]:
+            fruits.remove(fruit)
+            missed += 1
+            print("Missed a fruit! Missed:", missed)
+
+    cv2.putText(frame, f"Score: {score}", (10,40),
+            cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2)
+    
+    cv2.putText(frame, f"Missed: {missed}", (10,80),
+            cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+
+
 
     cv2.imshow("Hand Tracking Test", frame)
 
