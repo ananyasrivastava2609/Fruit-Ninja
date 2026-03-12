@@ -1,5 +1,6 @@
 import cv2
 import math
+import random
 from hand_tracker import HandTracker
 from fruit import Fruit
 
