@@ -8,6 +8,7 @@ cap = cv2.VideoCapture(0)
 tracker = HandTracker()
 fruits = []
 frame_count = 0
+score = 0
 
 while True:
 
@@ -41,7 +42,18 @@ while True:
 
             if distance < fruit.radius:
                 fruits.remove(fruit)
-                print("Fruit sliced!")
+                score += 1
+                print("Fruit sliced! Score:", score)
+
+    cv2.putText(
+        frame,
+        f"Score: {score}",
+        (20, 50),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1,
+        (255, 255, 255),
+        2
+    )
 
     cv2.imshow("Hand Tracking Test", frame)
 
